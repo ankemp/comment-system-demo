@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:api": "json-server --watch json-server/data.json --routes json-server/routes.json",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
