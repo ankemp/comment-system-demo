@@ -1,11 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 
-import { Comment } from './comment.model';
+import { Comment } from 'src/app/core/models';
 
-export const loadComments = createAction(
-  '[Comment/API] Load Comments'
-);
+export const loadComments = createAction('[Comment/API] Load Comments');
 
 export const loadCommentsSuccess = createAction(
   '[Comment/API] Load Comments Success',

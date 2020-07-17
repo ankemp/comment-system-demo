@@ -1,18 +1,22 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, ElementRef, ViewChild, OnInit, Input } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+import {
+  MatAutocompleteSelectedEvent,
+  MatAutocomplete,
+} from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 
 import { Observable } from 'rxjs';
 import { map, startWith, withLatestFrom } from 'rxjs/operators';
 
-import { Comment, CommentFacade } from '../store/comment'
+import { Comment } from 'src/app/core/models';
+import { CommentFacade } from '../store/comment';
 
 @Component({
   selector: 'app-comment-card-edit',
   templateUrl: './comment-card-edit.component.html',
-  styleUrls: ['./comment-card-edit.component.scss']
+  styleUrls: ['./comment-card-edit.component.scss'],
 })
 export class CommentCardEditComponent implements OnInit {
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
@@ -26,7 +30,7 @@ export class CommentCardEditComponent implements OnInit {
   constructor(
     private readonly fb: FormBuilder,
     private readonly commentFacade: CommentFacade
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     if (!!this.data) {
@@ -51,8 +55,8 @@ export class CommentCardEditComponent implements OnInit {
         if (tag === null) {
           return [...allTags];
         }
-        const value = tag.toLowerCase()
-        return allTags.filter(t => t.toLowerCase().includes(value));
+        const value = tag.toLowerCase();
+        return allTags.filter((t) => t.toLowerCase().includes(value));
       })
     );
   }
@@ -98,7 +102,6 @@ export class CommentCardEditComponent implements OnInit {
   removeTag(tag: string): void {
     const tags = [...this.form.value.tags];
 
-    this.form.get('tags').setValue([...tags.filter(t => t !== tag)]);
+    this.form.get('tags').setValue([...tags.filter((t) => t !== tag)]);
   }
-
 }
