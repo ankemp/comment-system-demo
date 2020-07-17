@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { StoreRouterConnectingModule, RouterState } from '@ngrx/router-store';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,8 +17,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 import { reducers, metaReducers } from './reducers';
-import { CommentStoreModule } from './store';
+import { CommentStoreModule, RouteSerializer } from './store';
 import { PipesModule } from './pipes/pipes.module';
 import { DirectivesModule } from './directives/directives.module';
 
@@ -25,6 +27,7 @@ import { CommentCardComponent } from './comment-card/comment-card.component';
 import { CommentsListComponent } from './comments-list/comments-list.component';
 import { CommentCardEditComponent } from './comment-card-edit/comment-card-edit.component';
 import { CommentFilterComponent } from './comment-filter/comment-filter.component';
+import { CommentsViewComponent } from './comments-view/comments-view.component';
 
 const materialModules = [
   MatAutocompleteModule,
@@ -43,7 +46,8 @@ const materialModules = [
     CommentCardComponent,
     CommentsListComponent,
     CommentCardEditComponent,
-    CommentFilterComponent
+    CommentFilterComponent,
+    CommentsViewComponent
   ],
   imports: [
     BrowserModule,
@@ -53,11 +57,16 @@ const materialModules = [
     StoreModule.forRoot(reducers, {
       metaReducers
     }),
+    StoreRouterConnectingModule.forRoot({
+      serializer: RouteSerializer,
+      routerState: RouterState.Full,
+    }),
     EffectsModule.forRoot([]),
     CommentStoreModule,
     ...materialModules,
     PipesModule,
-    DirectivesModule
+    DirectivesModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
