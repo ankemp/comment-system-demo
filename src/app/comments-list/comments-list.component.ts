@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { CommentFacade } from '../store/comment';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-comments-list',
@@ -8,7 +9,9 @@ import { CommentFacade } from '../store/comment';
   styleUrls: ['./comments-list.component.scss']
 })
 export class CommentsListComponent implements OnInit {
-  list$ = this.commentFacade.list$;
+  list$ = this.commentFacade.list$.pipe(
+    tap(d => console.log('comments: ', d))
+  );
   activeEditId$ = this.commentFacade.activeEditId$;
 
   constructor(
@@ -16,9 +19,6 @@ export class CommentsListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // load comments, typically would do this with an effect watching the route,
-    // but for simplicity I'm just calling it here.
-    this.commentFacade.getAll();
   }
 
 }
