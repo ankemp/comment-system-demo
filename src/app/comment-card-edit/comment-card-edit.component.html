@@ -1,0 +1,36 @@
+<mat-card class="comment-card">
+  <form [formGroup]="form" #commentForm="ngForm" (ngSubmit)="submit($event, commentForm)" novalidate>
+    <mat-form-field class="full-width-field">
+      <mat-label>Comment Title</mat-label>
+      <input matInput formControlName="title">
+    </mat-form-field>
+    <mat-form-field class="full-width-field">
+      <mat-chip-list #chipList>
+        <mat-chip *ngFor="let tag of form.value.tags" selectable="true" removable="true" (removed)="removeTag(tag)">
+          {{ tag }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="New tag..." #tagInput [formControl]="tagCtrl" [matAutocomplete]="auto"
+          [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addTag($event)">
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+          {{ tag }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field class="full-width-field">
+      <mat-label>Comment Body</mat-label>
+      <textarea matInput rows="6" formControlName="text"></textarea>
+    </mat-form-field>
+    <mat-card-actions align="end">
+      <button mat-button (click)="cancel()">
+        Cancel
+      </button>
+      <button mat-button color="primary" type="submit">
+        {{ !!data?.id ? 'Save' : 'Add' }}
+      </button>
+    </mat-card-actions>
+  </form>
+</mat-card>

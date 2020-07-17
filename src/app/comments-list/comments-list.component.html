@@ -1,0 +1,14 @@
+<section class="comment-list" *ngIf="list$ | async as list; else loading;">
+  <app-comment-filter></app-comment-filter>
+  <ng-container *ngLet="activeEditId$ | async as activeEditId">
+    <ng-container *ngFor="let item of list">
+      <app-comment-card *ngIf="activeEditId !== item.id" [data]="item"></app-comment-card>
+      <app-comment-card-edit *ngIf="activeEditId === item.id" [data]="item"></app-comment-card-edit>
+    </ng-container>
+    <app-comment-card-edit *ngIf="!activeEditId"></app-comment-card-edit>
+  </ng-container>
+</section>
+
+<ng-template #loading>
+  <p>Loading...</p>
+</ng-template>
