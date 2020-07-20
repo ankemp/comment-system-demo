@@ -23,6 +23,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { reducers, metaReducers } from './reducers';
 import { CommentStoreModule, RouteSerializer } from './store';
+import { RouteEffects } from './store/route/route.effects';
 import { PipesModule } from './pipes/pipes.module';
 import { DirectivesModule } from './directives/directives.module';
 
@@ -31,6 +32,7 @@ import { CommentsListComponent } from './comments-list/comments-list.component';
 import { CommentCardEditComponent } from './comment-card-edit/comment-card-edit.component';
 import { CommentFilterComponent } from './comment-filter/comment-filter.component';
 import { CommentsViewComponent } from './comments-view/comments-view.component';
+
 
 const materialModules = [
   MatAutocompleteModule,
@@ -64,6 +66,9 @@ const materialModules = [
       serializer: RouteSerializer,
       routerState: RouterState.Full,
     }),
+    EffectsModule.forRoot([
+      RouteEffects
+    ]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     CommentStoreModule,
     ...materialModules,
