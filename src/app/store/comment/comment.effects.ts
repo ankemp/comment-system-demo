@@ -29,5 +29,14 @@ export class CommentEffects {
     )
   );
 
+  commentsFilterRoute$ = createEffect(() =>
+    this.actions$.pipe(
+      ofRoute('/comments', { queryParams: ['tags'] }),
+      map(({ queryParams }) => CommentActions.filterComments({
+        filters: { tags: Array.isArray(queryParams['tags']) ? queryParams['tags'] : [queryParams['tags']] }
+      }))
+    )
+  );
+
   constructor(private api: CommentHttpProxy, private actions$: Actions) { }
 }

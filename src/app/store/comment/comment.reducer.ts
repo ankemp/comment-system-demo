@@ -28,10 +28,12 @@ export const reducer = createReducer(
     ...state,
     activeEditId: action.id,
   })),
+
   on(CommentActions.filterComments, (state, action) => ({
     ...state,
     filters: action.filters,
   })),
+
   on(CommentActions.addComment, (state, action) => {
     const newComment = {
       ...action.comment,
@@ -39,19 +41,24 @@ export const reducer = createReducer(
     } as Comment;
     return adapter.addOne(newComment, state);
   }),
+
   on(CommentActions.upsertComment, (state, action) =>
     adapter.upsertOne(action.comment, state)
   ),
+
   on(CommentActions.updateComment, (state, action) => ({
     ...adapter.updateOne(action.comment, state),
     activeEditId: undefined,
   })),
+
   on(CommentActions.deleteComment, (state, action) =>
     adapter.removeOne(action.id, state)
   ),
+
   on(CommentActions.loadCommentsSuccess, (state, action) =>
     adapter.setAll(action.comments, state)
   )
+
 );
 
 export const {

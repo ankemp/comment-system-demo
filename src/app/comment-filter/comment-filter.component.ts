@@ -17,6 +17,8 @@ import { CommentFacade } from '../store/comment';
 export class CommentFilterComponent implements OnInit, OnDestroy {
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  allTags$ = this.commentFacade.tags$;
+  allFilters$ = this.commentFacade.filters$;
   form = this.fb.group({
     tags: [[]]
   });
@@ -30,23 +32,22 @@ export class CommentFilterComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.allFilters$.pipe(
+      untilDestroy(this)
+    ).subscribe(filters => {
+      this.form.setValue({ ...filters });
+    });
     this.filteredTags = this.tagCtrl.valueChanges.pipe(
-      startWith(null),
-      withLatestFrom(this.commentFacade.tags$),
+      startWith(null as string[]),
+      withLatestFrom(this.allTags$),
       map(([tag, allTags]) => {
         if (tag === null) {
           return [...allTags];
         }
-        const value = tag.toLowerCase()
+        const value = tag.toLowerCase();
         return allTags.filter(t => t.toLowerCase().includes(value));
       })
     );
-
-    this.form.valueChanges.pipe(
-      untilDestroy(this)
-    ).subscribe(formValue => {
-      this.commentFacade.filter(formValue)
-    });
   }
 
   ngOnDestroy(): void {
@@ -54,16 +55,24 @@ export class CommentFilterComponent implements OnInit, OnDestroy {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    const tags = [...this.form.value.tags];
-    this.form.get('tags').setValue([...tags, event.option.viewValue]);
     this.tagInput.nativeElement.value = '';
     this.tagCtrl.setValue(null);
+    this.commentFacade.filter({
+      ...this.form.value,
+      tags: [
+        ...this.form.value.tags,
+        event.option.viewValue
+      ]
+    });
   }
 
   removeTag(tag: string): void {
-    const tags = [...this.form.value.tags];
-
-    this.form.get('tags').setValue([...tags.filter(t => t !== tag)]);
+    this.commentFacade.filter({
+      ...this.form.value,
+      tags: [
+        ...this.form.value.tags.filter(t => t !== tag)
+      ]
+    });
   }
 
 }
