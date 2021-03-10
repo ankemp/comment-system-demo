@@ -4,9 +4,10 @@ import { Observable, EMPTY } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { EntityMetadata } from '../models/serde';
+import { DataProxy } from './data-proxy.interface';
 
-export abstract class HttpDataProxy<T extends EntityMetadata<T>> {
-  protected abstract baseUri: string;
+export abstract class HttpDataProxy<T extends EntityMetadata<T>> implements DataProxy<T> {
+  abstract baseUri: string;
 
   constructor(public parentKlass: new () => T, private http: HttpClient) { }
 
