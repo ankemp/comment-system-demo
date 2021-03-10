@@ -1,7 +1,7 @@
 <mat-card class="comment-card">
   <mat-card-header>
     <mat-card-title>{{ data.title }}</mat-card-title>
-    <mat-card-subtitle>
+    <mat-card-subtitle *ngIf="data.hasTags">
       <mat-chip-list>
         <mat-chip *ngFor="let tag of data.tags" color="primary" selected>{{ tag }}</mat-chip>
       </mat-chip-list>

@@ -6,6 +6,7 @@ import { CommentsViewComponent } from './comments-view/comments-view.component';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'comments' },
   { path: 'comments', component: CommentsViewComponent },
+  { path: 'comments/:id', component: CommentsViewComponent },
 ];
 
 @NgModule({
